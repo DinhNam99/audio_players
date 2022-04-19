@@ -24,7 +24,7 @@ class AudioPlayer {
       const MethodChannel('xyz.luan/audioplayers')
         ..setMethodCallHandler(platformCallHandler);
 
-  static final _uuid = Uuid();
+  static const _uuid = Uuid();
 
   final StreamController<PlayerState> _playerStateController =
       StreamController<PlayerState>.broadcast();
@@ -55,7 +55,7 @@ class AudioPlayer {
   /// (because there is only one channel for all players).
   static final players = <String, AudioPlayer>{};
 
-  NotificationService notificationService;
+  late NotificationService notificationService;
 
   PlayerState _playerState = PlayerState.STOPPED;
 
@@ -126,7 +126,7 @@ class AudioPlayer {
   final PlayerMode mode;
 
   /// Creates a new instance and assigns an unique id to it.
-  AudioPlayer({this.mode = PlayerMode.MEDIA_PLAYER, String playerId})
+  AudioPlayer({this.mode = PlayerMode.MEDIA_PLAYER, String? playerId})
       : playerId = playerId ?? _uuid.v4() {
     players[this.playerId] = this;
     notificationService = NotificationService(_invokeMethod);
@@ -161,10 +161,10 @@ class AudioPlayer {
   /// respectSilence and stayAwake are not implemented on macOS.
   Future<int> play(
     String url, {
-    bool isLocal,
+    bool? isLocal,
     double volume = 1.0,
     // position must be null by default to be compatible with radio streams
-    Duration position,
+    Duration? position,
     bool respectSilence = false,
     bool stayAwake = false,
     bool duckAudio = false,
@@ -198,7 +198,7 @@ class AudioPlayer {
     Uint8List bytes, {
     double volume = 1.0,
     // position must be null by default to be compatible with radio streams
-    Duration position,
+    Duration? position,
     bool respectSilence = false,
     bool stayAwake = false,
     bool duckAudio = false,
@@ -344,7 +344,7 @@ class AudioPlayer {
   /// respectSilence is not implemented on macOS.
   Future<int> setUrl(
     String url, {
-    bool isLocal,
+    bool? isLocal,
     bool respectSilence = false,
     bool recordingActive = false,
   }) {

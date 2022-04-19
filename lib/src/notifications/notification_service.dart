@@ -141,7 +141,7 @@ class NotificationService {
 List<dynamic> _getBgHandleKey(Function callback) {
   final handle = PluginUtilities.getCallbackHandle(callback);
   assert(handle != null, 'Unable to lookup callback.');
-  return <dynamic>[handle.toRawHandle()];
+  return <dynamic>[handle!.toRawHandle()];
 }
 
 /// When we start the background service isolate, we only ever enter it once.
@@ -155,7 +155,7 @@ void _backgroundCallbackDispatcher() {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Reference to the onAudioChangeBackgroundEvent callback.
-  Function(PlayerState) onAudioChangeBackgroundEvent;
+  Function(PlayerState)? onAudioChangeBackgroundEvent;
 
   // This is where the magic happens and we handle background events from the
   // native portion of the plugin. Here we message the audio notification data
@@ -181,11 +181,11 @@ void _backgroundCallbackDispatcher() {
       onAudioChangeBackgroundEvent ??= _performCallbackLookup();
       final playerState = args['value'] as String;
       if (playerState == 'playing') {
-        onAudioChangeBackgroundEvent(PlayerState.PLAYING);
+        onAudioChangeBackgroundEvent!(PlayerState.PLAYING);
       } else if (playerState == 'paused') {
-        onAudioChangeBackgroundEvent(PlayerState.PAUSED);
+        onAudioChangeBackgroundEvent!(PlayerState.PAUSED);
       } else if (playerState == 'completed') {
-        onAudioChangeBackgroundEvent(PlayerState.COMPLETED);
+        onAudioChangeBackgroundEvent!(PlayerState.COMPLETED);
       }
     } else {
       assert(false, "No handler defined for method type: '${call.method}'");

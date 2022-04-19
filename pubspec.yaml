@@ -15,9 +15,9 @@ flutter:
         pluginClass: AudioplayersPlugin
 
 dependencies:
-  uuid: ^2.0.0
-  path_provider: ^1.6.27
-  http: '0.12.2'
+  uuid: ^3.0.4
+  path_provider: ^2.0.4
+  http: ^0.13.3
   flutter:
     sdk: flutter
 
@@ -27,5 +27,5 @@ dev_dependencies:
     sdk: flutter
 
 environment:
-  sdk: ">=2.8.0 <3.0.0"
-
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=1.10.0"

@@ -39,7 +39,7 @@ class AudioCache {
   ///
   /// If not set, the AudioCache will create and return a new instance of AudioPlayer every call, allowing for simultaneous calls.
   /// If this is set, every call will overwrite previous calls.
-  AudioPlayer fixedPlayer;
+  AudioPlayer? fixedPlayer;
 
   /// This flag should be set to true, if player is used for playing internal notifications
   ///
@@ -100,7 +100,7 @@ class AudioCache {
   Uri _sanitizeURLForWeb(String fileName) {
     final tryAbsolute = Uri.tryParse(fileName);
     if (tryAbsolute?.isAbsolute == true) {
-      return tryAbsolute;
+      return tryAbsolute!;
     }
 
     // local asset
@@ -114,7 +114,7 @@ class AudioCache {
     if (!loadedFiles.containsKey(fileName)) {
       loadedFiles[fileName] = await fetchToMemory(fileName);
     }
-    return loadedFiles[fileName];
+    return loadedFiles[fileName]!;
   }
 
   /// Loads a single [fileName] to the cache but returns it as a File.
@@ -150,11 +150,11 @@ class AudioCache {
   Future<AudioPlayer> play(
     String fileName, {
     double volume = 1.0,
-    bool isNotification,
+    bool? isNotification,
     PlayerMode mode = PlayerMode.MEDIA_PLAYER,
     bool stayAwake = false,
     bool recordingActive = false,
-    bool duckAudio,
+    bool? duckAudio,
   }) async {
     final uri = await load(fileName);
     final player = _player(mode);
@@ -178,7 +178,7 @@ class AudioCache {
   Future<AudioPlayer> playBytes(
     Uint8List fileBytes, {
     double volume = 1.0,
-    bool isNotification,
+    bool? isNotification,
     PlayerMode mode = PlayerMode.MEDIA_PLAYER,
     bool loop = false,
     bool stayAwake = false,
@@ -210,7 +210,7 @@ class AudioCache {
   Future<AudioPlayer> loop(
     String fileName, {
     double volume = 1.0,
-    bool isNotification,
+    bool? isNotification,
     PlayerMode mode = PlayerMode.MEDIA_PLAYER,
     bool stayAwake = false,
   }) async {

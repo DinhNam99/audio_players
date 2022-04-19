@@ -237,15 +237,15 @@ class WrappedMediaPlayer {
                 self.player = player
                 self.observers = []
                 self.url = url
-                
-                // stream player position
-                let interval = toCMTime(millis: 0.2)
-                let timeObserver = player.addPeriodicTimeObserver(forInterval: interval, queue: nil) {
-                    [weak self] time in
-                    self!.onTimeInterval(time: time)
-                }
-                reference.timeObservers.append(TimeObserver(player: player, observer: timeObserver))
             }
+
+            // stream player position
+            let interval = toCMTime(millis: 0.2)
+            let timeObserver = player.addPeriodicTimeObserver(forInterval: interval, queue: nil) {
+                [weak self] time in
+                self!.onTimeInterval(time: time)
+            }
+            reference.timeObservers.append(TimeObserver(player: player, observer: timeObserver))
             
             let anObserver = NotificationCenter.default.addObserver(
                 forName: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
@@ -313,8 +313,11 @@ class WrappedMediaPlayer {
             if let time = time {
                 player.seek(to: time)
             }
-            self.resume()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.resume()
+            }
         }
+
         
         reference.lastPlayerId = playerId
     }
